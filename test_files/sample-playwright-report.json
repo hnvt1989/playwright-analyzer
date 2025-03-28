@@ -1,0 +1,85 @@
+{
+  "suites": [
+    {
+      "title": "Login Flow",
+      "file": "tests/login.spec.ts",
+      "duration": 4210,
+      "tests": [
+        {
+          "title": "should login successfully",
+          "status": "passed",
+          "duration": 312,
+          "steps": [
+            {
+              "title": "goto https://myapp.com/login",
+              "duration": 150
+            },
+            {
+              "title": "fill [data-test=username]",
+              "duration": 50
+            },
+            {
+              "title": "click [data-test=submit]",
+              "duration": 100
+            }
+          ]
+        },
+        {
+          "title": "should show error on wrong password",
+          "status": "failed",
+          "duration": 289,
+          "error": {
+            "message": "Expected error message not found",
+            "stack": "AssertionError: expected element to be visible\n    at...",
+            "expected": "visible",
+            "actual": "not visible"
+          },
+          "steps": [
+            {
+              "title": "goto https://myapp.com/login",
+              "duration": 120
+            },
+            {
+              "title": "fill [data-test=username]",
+              "duration": 45
+            },
+            {
+              "title": "fill [data-test=password]",
+              "duration": 30
+            },
+            {
+              "title": "click [data-test=submit]",
+              "duration": 80
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Checkout Flow",
+      "file": "tests/checkout.spec.ts",
+      "duration": 2980,
+      "tests": [
+        {
+          "title": "should complete checkout",
+          "status": "passed",
+          "duration": 598,
+          "steps": [
+            {
+              "title": "navigate to cart",
+              "duration": 200
+            },
+            {
+              "title": "click checkout",
+              "duration": 120
+            },
+            {
+              "title": "fill payment info",
+              "duration": 278
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
