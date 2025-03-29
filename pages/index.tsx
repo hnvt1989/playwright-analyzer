@@ -2,7 +2,12 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store";
 import { setTestResult } from "../store/testResultSlice";
-import { extractFailedTests, exportFailuresToCSV, downloadCSV } from "../utils/extractErrors";
+import {
+  extractFailedTests,
+  exportFailuresToCSV,
+  downloadCSV,
+  predictFlakinessForFailures
+} from "../utils/extractErrors";
 
 const Home: React.FC = () => {
   const dispatch = useDispatch();
@@ -20,12 +25,13 @@ const Home: React.FC = () => {
     if (!file) return;
 
     const reader = new FileReader();
-    reader.onload = (event) => {
+    reader.onload = async (event) => {
       try {
         const json = JSON.parse(event.target?.result as string);
         dispatch(setTestResult(json));
         const result = extractFailedTests(json);
-        setAnalysis(result);
+        const enriched = await predictFlakinessForFailures(result.failures);
+        setAnalysis({ ...result, failures: enriched });
       } catch (err) {
         console.error("Failed to parse JSON", err);
       }
@@ -91,6 +97,9 @@ const Home: React.FC = () => {
               <p><strong>Test:</strong> {fail.title}</p>
               <p><strong>Line:</strong> {fail.line ?? "Unknown"}</p>
               <p><strong>Message:</strong> {fail.message}</p>
+              <p className={`text-sm font-semibold ${fail.flaky ? "text-yellow-600" : "text-green-700"}`}>
+                Prediction: {fail.flaky === undefined ? "?" : fail.flaky ? "Flaky" : "Stable"}
+              </p>
               <pre className="mt-2 text-xs text-gray-600">{fail.stack}</pre>
             </div>
           ))}
