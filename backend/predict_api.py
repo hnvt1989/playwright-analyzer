@@ -41,3 +41,25 @@ def predict_flaky(data: TestFailure):
     features = df[["file_encoded", "line", "title_len", "msg_keywords"]]
     prediction = model.predict(features)[0]
     return { "is_flaky": bool(prediction) }
+
+# Database connection example for login
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+
+@app.post("/login")
+def login(data: LoginRequest):
+    conn = mysql.connector.connect(
+        host="mysql_members",
+        user="memberuser",
+        password="memberpass",
+        database="Members"
+    )
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM Credential WHERE email=%s", (data.email,))
+    user = cursor.fetchone()
+
+    if not user or user["password_hash"] != data.password:
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+
+    return {"message": "Login successful"}

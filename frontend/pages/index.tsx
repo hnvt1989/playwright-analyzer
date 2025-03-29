@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/router";
 import { RootState } from "../store";
 import { setTestResult } from "../store/testResultSlice";
 import {
@@ -11,9 +12,17 @@ import {
 
 const Home: React.FC = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const testResult = useSelector((state: RootState) => state.testResult.result);
   const [file, setFile] = useState<File | null>(null);
   const [analysis, setAnalysis] = useState<any>(null);
+
+  useEffect(() => {
+    const isAuthenticated = localStorage.getItem("authenticated") === "true";
+    if (!isAuthenticated) {
+      router.push("/login");
+    }
+  }, []);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files?.[0]) {
@@ -45,11 +54,22 @@ const Home: React.FC = () => {
     downloadCSV(csv);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("authenticated");
+    router.push("/login");
+  };
+
   return (
     <div className="p-4 max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">
-        Playwright Test Result Analyzer
-      </h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold text-gray-800">Playwright Test Result Analyzer</h1>
+        <button
+          className="text-sm text-red-600 underline hover:text-red-800"
+          onClick={handleLogout}
+        >
+          Logout
+        </button>
+      </div>
 
       <label className="block w-full">
         <span className="sr-only">Choose test result file</span>

@@ -1,12 +1,5 @@
-run backend server: uvicorn predict_api:app --reload
-run front end server: npm run dev
 
-#mysql 
-docker exec -it mysql_members mysql -u root -p
-# Enter password: root
-USE Members;
-SHOW TABLES;
+Analyze the playwright test result file and predict if the failures are flaky or ACTUAL error
 
-
-docker-compose down -v  # remove volumes
-docker-compose up --build
+Test user: 1@test.com
+Password:  test1
