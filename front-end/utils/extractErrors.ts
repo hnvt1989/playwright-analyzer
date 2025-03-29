@@ -64,7 +64,7 @@ const extractFailedTests = (data: { suites?: TestSuite[] }): ExtractedResult => 
 const predictFlakinessForFailures = async (failures: Failure[]): Promise<Failure[]> => {
   const updatedFailures = await Promise.all(failures.map(async (fail) => {
     try {
-      const response = await fetch("http://localhost:8000/predict", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/predict`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
