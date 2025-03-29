@@ -1,0 +1,2 @@
+run backend server: uvicorn predict_api:app --reload
+run front end server: npm run dev
