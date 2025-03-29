@@ -4,6 +4,7 @@ from pydantic import BaseModel
 import joblib
 import pandas as pd
 import re
+import mysql.connector
 
 from fastapi.middleware.cors import CORSMiddleware
 
