@@ -1,2 +1,12 @@
 run backend server: uvicorn predict_api:app --reload
 run front end server: npm run dev
+
+#mysql 
+docker exec -it mysql_members mysql -u root -p
+# Enter password: root
+USE Members;
+SHOW TABLES;
+
+
+docker-compose down -v  # remove volumes
+docker-compose up --build

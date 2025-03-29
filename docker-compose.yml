@@ -1,15 +1,32 @@
 version: "3.9"
 services:
-  frontend:
-    build: ./frontend
-    ports:
-      - "3000:3000"
-    environment:
-      - NEXT_PUBLIC_API_URL=http://backend:8000
-    depends_on:
-      - backend
+  # frontend:
+  #   build: ./frontend
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     - NEXT_PUBLIC_API_URL=http://backend:8000
+  #   depends_on:
+  #     - backend
 
-  backend:
-    build: ./backend
+  # backend:
+  #   build: ./backend
+  #   ports:
+  #     - "8000:8000"
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_members
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: Members
+      MYSQL_USER: memberuser
+      MYSQL_PASSWORD: memberpass
     ports:
-      - "8000:8000"
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  mysql_data:
