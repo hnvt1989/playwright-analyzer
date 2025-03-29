@@ -3,3 +3,31 @@ Analyze the playwright test result file and predict if the failures are flaky or
 
 Test user: 1@test.com
 Password:  test1
+
+
+---------------
+🧠 ML Model Summary:
+Type: RandomForestClassifier
+
+Library: scikit-learn
+
+Language: Python
+
+Model file: flaky_test_model.joblib
+
+🧪 Features used:
+file_encoded — numeric encoding of the test file name
+
+line — line number where failure occurred
+
+title_len — length of the test title
+
+msg_keywords — does the error message include key phrases like "timeout", "not found", or "mismatch"
+
+✅ Training Summary (from train_model.py):
+python
+Copy
+Edit
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+model.fit(X_train, y_train)
+You can always retrain with more features (e.g., retries, duration) or more historical flaky data.
